@@ -8,7 +8,7 @@ Structure of this file:
     - `allowedTypeGroup`: The id of a TypeGroup that specifies which Types would be accepted as a value of this type.
 - `TypeGroups`: Array of objects
     - `id`: String; internal, used to identify the TypeGroup
-    - `expr`: String; expression with TypeGroup or Type names and the operators !, &, and |. "all" is a special TypeGroup.
+    - `expr`: String; expression to define the set of all Types that this TypeGroup accepts. Type or other TypeGroup names can be used, along with the operators `!`, `&`, and `|`. `all` represents all Types.
 - `Categories`: Array of objects; Categories are used to group Commands in the UI
     - `name`: String; used in the UI
     - `color`: String; color that represents this Category
@@ -19,8 +19,7 @@ Structure of this file:
     - `returnType`: String
     - `BasePhrase`: Object
         - `keyword`: String; can be multiple words
-        - `Parts`: Array of objects
-            - `isArgument`: Boolean; if false, the part is a word
+        - `Parts`: Array of objects; each part can be a word or an argument
             - For words only:
                 - `text`: String
             - For arguments only:
@@ -34,7 +33,7 @@ Structure of this file:
         - Each OptionalPhrase has the same properties as in BasePhrase, along with the ones below
         - `shortDescription`: String
         - `longDescription`: String
-        - `allowedRule`: String; expression to determine if the optional phrase can be used, based on what optional phrases have been used before it. The keyword of an optional phrase is a boolean that returns if it has been used in the command. Operators: !, &, |.
+        - `allowedRule`: String; expression to determine if the optional phrase can be used, based on what optional phrases have been used before it. The keyword of an optional phrase is a boolean that returns if it has been used in the command. The operators `!`, `&`, and `|` can be used.
 
         
         
