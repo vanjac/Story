@@ -7,7 +7,7 @@ Story is designed to combine the best aspects of visual and traditional text-bas
 
 Story will be a text based language designed to keep the discoverability of visual programming languages, using a special JavaScript editor. Wherever you place your cursor, the editor will show you what commands or expressions you can insert at that place, with a set of buttons for those phrases. You can construct programs by clicking the buttons to assemble phrases, or you can type them yourself. When you add a command, its arguments are represented by blanks to fill in, and putting your cursor on those blanks will show buttons for expressions that could be used in that place. The syntax is designed to be as simple as possible. See the `syntax.md` file for more info on the syntax.
 
-The commands availible in the language will be defined in a JSON file that can be extended. See the `language-definition.md` file for more info on that, and see `simple-language.md` for a base set of commands for a language.
+The commands availible for scripts will be defined in a Language Definition file (JSON). See the `language-definition.md` file for more info on that, and see the `example` directory for a example language that could be created.
 
 The editor will compile scripts to a JSON file - it will be up to developers to write interpreters for the compiled scripts. See `compiled.md` for a description of the format.
 
