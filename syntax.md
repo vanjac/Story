@@ -1,5 +1,8 @@
 # Story Syntax
 
+TODO:
+- variables
+
 ## Type system
 All values are strings, however the language has Static type checking and Strong typing. Each expression has a return type that can be easily determined by looking at the expression. And each argument has a type that the expression must be.
 
