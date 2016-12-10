@@ -23,3 +23,5 @@
 - `is {not}`, `=`, `<>`
 - `<`, `>`, `<=`, `>=`
 - `[command] then [command]`
+- `[Anything] as text`
+- `[Anything] as number`
