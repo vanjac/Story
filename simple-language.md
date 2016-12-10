@@ -8,12 +8,14 @@
 - Condition
 
 ## Commands
-- `not [Condition]`
-- `if [Condition] then [command] {otherwise [command]}`
-- `while [Condition] do [command]`
-- `until [Condition] do [command]`
-- `repeat [command] for [Number] times`
-- `wait [Number seconds`
+- `not [Condition]`: Condition
+- `if [Condition] then [command] {otherwise [command]}`: Nothing
+- `while [Condition] do [command]`: Nothing
+- `until [Condition] do [command]`: Nothing
+- `repeat [command] for [Number] times`: Nothing
+- `wait [Number] seconds`: Nothing
+- `set [var] to [Anything]`: Nothing
+- `variable [var]`: Anything
 
 ### Infix commands
 - `+`, `-`, `*`, `/`
