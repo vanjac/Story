@@ -4,7 +4,7 @@ TODO:
 - variables
 
 ## Type system
-All values are strings, however the language has Static type checking and Strong typing. Each expression has a return type that can be easily determined by looking at the expression. And each argument has a type that the expression must be.
+All values are strings, however the language has static type checking and strong typing when the script is "compiled". Each expression has a return type that can be easily determined by looking at the expression. And each argument has a type that the expression must be. In the "compiled" form of the script there are no types.
 
 All Types can determine, for any other type, if a value of the other type would be accepted as a value of this type.
 
