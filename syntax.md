@@ -14,7 +14,7 @@ A script is an expression, which must have a return type of "Nothing".
 When an expression is used as an argument for another expression, if it is not a literal or a single word it MUST be surrounded by brackets ( `[` and `]` ). Brackets are optional around literals and single words. Brackets are not used anywhere else.
 
 Types of expressions:
-- Multiline: If the expression takes up multiple lines, each line is evaluated as an expression in sequence. All but the last expression must have a return type of "Nothing". The return type of the last expression line is used as the return type of the entire expression.
+- Multiline: If the expression takes up multiple lines, each line is evaluated as an expression in sequence. Empty lines are ignored. All but the last expression must have a return type of "Nothing". The return type of the last expression line is used as the return type of the entire expression.
 - Literal:
     - Number literal: values like `-1.23` are accepted
     - Text (string) literal: surround strings in single or double quotes.
