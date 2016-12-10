@@ -16,7 +16,7 @@ Structure of this file:
     - `shortDescription`: String
     - `longDescription`: String
     - `category`: String; the name of a category
-    - `returnType`: String
+    - `returnType`: String; name of a type, or "=argId" to have the command return the same type as passed to a certain argument.
     - `BasePhrase`: Object
         - `keyword`: String; can be multiple words
         - `Parts`: Array of objects; each part can be a word or an argument
@@ -25,10 +25,10 @@ Structure of this file:
             - For arguments only:
                 - `id`: String; Internal, represents the argument
                 - `name`: String; used in UI
-                - `type`: String; what type is accepted; empty string to accept any text
+                - `type`: String; what type is accepted; empty string to accept any text; "=argId" to require the type to match the value of another argument.
     - `PrecedingArgument`: Object, optional
         - `name`: String
-        - `type`: String
+        - `type`: String; see Parts
     - `OptionalPhrases`: Array of objects
         - Each OptionalPhrase has the same properties as in BasePhrase, along with the ones below
         - `shortDescription`: String
