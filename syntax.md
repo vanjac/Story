@@ -1,7 +1,6 @@
 # Story Syntax
 
-TODO:
-- variables
+Nothing is case sensitive.
 
 ## Type system
 All values are strings, however the language has static type checking and strong typing when the script is "compiled". Each expression has a return type that can be easily determined by looking at the expression. And each argument has a type that the expression must be. In the "compiled" form of the script there are no types.
