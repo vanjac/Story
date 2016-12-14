@@ -102,11 +102,3 @@ function ScriptError(message, type, index, length) {
     this.length = length;
 }
 
-compileExpression("abc", null);
-compileExpression("1.23", null);
-compileExpression("\"abc\"", null);
-compileExpression("\"abc\" and \"abc\"", null);
-compileExpression("abc\n:abc\n", null);
-compileExpression("", null);
-compileExpression("_____", null);
-
