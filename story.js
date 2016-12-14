@@ -12,10 +12,10 @@ function checkExpression(expression, language) {
 }
 
 
-
-function Error(message, type, index, length) {
+function ScriptError(message, type, index, length) {
     this.message = message;
     this.type = type;
     this.index = index;
     this.length = length;
 }
+
