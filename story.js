@@ -26,28 +26,36 @@ function _compileRecursive(expression, language) {
     if(len == 0)
         return null;
     // determine what type of expression this is...
+    
+    if(!isNaN(expression)) {
+        // number literal
+        return {
+            "literalText": expression
+        };
+    }
+    
     var inComment = false, inString = false, stringStartChar, bracketDepth = 0,
         textInLine = false, textInPreviousLine = false;
-    var multiline = false, numberLiteral = true, textLiteral = true,
-        underscores = true, empty = true;
+    var multiline = false, textLiteral = true, underscores = true, empty = true;
     for(var i = 0; i < len; i++) {
         var c = expression.charAt(i);
-        if(c == ' ' || c == '\t') {
+        
+        if(c != '_')
             underscores = false;
-            numberLiteral = false;
+        
+        if(c == ' ' || c == '\t')
             continue;
-        }
+        
         if(c == '\n' && bracketDepth == 0) {
             inComment = false;
             textInPreviousLine = textInLine;
             textInLine = false;
             continue;
         }
+        
         if(!inComment) {
             if(c == ':' && !inString) {
                 inComment = true;
-                underscores = false;
-                numberLiteral = false;
                 textLiteral = false;
                 continue;
             }
@@ -56,11 +64,6 @@ function _compileRecursive(expression, language) {
             if(textInPreviousLine)
                 multiline = true;
             empty = false;
-            
-            if(c != '_')
-                underscores = false;
-            if(isNaN(c) && c != '.' && c != '-')
-                numberLiteral = false;
             
             if(inString) {
                 if(c == stringStartChar) {
@@ -91,11 +94,6 @@ function _compileRecursive(expression, language) {
     } else if(underscores) {
         // blank
         throw "You must remove all blanks (underscores) before compiling!";
-    } else if(numberLiteral) {
-        // number literal
-        return {
-            "literalText": expression
-        };
     } else if(textLiteral) {
         // text literal
         return {
