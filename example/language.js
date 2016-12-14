@@ -29,7 +29,7 @@ language = {
     "TypeGroups": [
         {
             "id": "GAnything",
-            "expr": "all"
+            "expr": "all-Nothing"
         },
         {
             "id": "GNothing",
@@ -37,15 +37,15 @@ language = {
         },
         {
             "id": "GNumber",
-            "expr": "Number"
+            "expr": "Number|Anything"
         },
         {
             "id": "GText",
-            "expr": "Text"
+            "expr": "Text|Anything"
         },
         {
             "id": "GCondition",
-            "expr": "Condition"
+            "expr": "Condition|Anything"
         }
     ],
     "Categories": [

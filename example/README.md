@@ -3,7 +3,7 @@
 An example Story language, with basic types and commands.
 
 ## Types
-- `Anything`: accepts anything, accepted by anything
+- `Anything`: accepts anything but Nothing, accepted by everything but Nothing
 - `Nothing`: accepts nothing but itself, accepted by nothing but itself
 - `Number`
 - `Text`: string
