@@ -105,6 +105,104 @@ language = {
                     ]
                 }
             ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Control",
+            "returnType": "Nothing",
+            "BasePhrase": {
+                "keyword": "while",
+                "Parts": [
+                    {
+                        "id": "condition",
+                        "name": "Condition",
+                        "type": "Condition"
+                    },
+                    {
+                        "text": "do"
+                    },
+                    {
+                        "id": "command",
+                        "name": "Command",
+                        "type": "Nothing"
+                    }
+                ]
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Control",
+            "returnType": "Nothing",
+            "BasePhrase": {
+                "keyword": "until",
+                "Parts": [
+                    {
+                        "id": "condition",
+                        "name": "Condition",
+                        "type": "Condition"
+                    },
+                    {
+                        "text": "do"
+                    },
+                    {
+                        "id": "command",
+                        "name": "Command",
+                        "type": "Nothing"
+                    }
+                ]
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Control",
+            "returnType": "Nothing",
+            "BasePhrase": {
+                "keyword": "repeat",
+                "Parts": [
+                    {
+                        "id": "command",
+                        "name": "Command",
+                        "type": "Command"
+                    },
+                    {
+                        "text": "for"
+                    },
+                    {
+                        "id": "number",
+                        "name": "Number",
+                        "type": "Number"
+                    },
+                    {
+                        "text": "times"
+                    }
+                ]
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Control",
+            "returnType": "Nothing",
+            "BasePhrase": {
+                "keyword": "wait",
+                "Parts": [
+                    {
+                        "id": "number",
+                        "name": "Number",
+                        "type": "Number"
+                    },
+                    {
+                        "text": "seconds"
+                    }
+                ]
+            },
+            "OptionalPhrases": [ ]
         }
     ]
 };
