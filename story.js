@@ -46,6 +46,9 @@ function _compileRecursive(expression, language) {
         if(!inComment) {
             if(c == ':' && !inString) {
                 inComment = true;
+                underscores = false;
+                numberLiteral = false;
+                textLiteral = false;
                 continue;
             }
             
@@ -82,14 +85,23 @@ function _compileRecursive(expression, language) {
     if(empty) {
         return null;
     } else if(multiline) {
+        // multiline...
         console.log("multiline");
     } else if(underscores) {
-        console.log("blank");
+        // blank
+        throw "You must remove all blanks (underscores) before compiling!";
     } else if(numberLiteral) {
-        console.log("number literal");
+        // number literal
+        return {
+            "literalText": expression
+        };
     } else if(textLiteral) {
-        console.log("text literal");
+        // text literal
+        return {
+            "literalText": expression.substring(1, expression.length - 1)
+        };
     } else {
+        // command...
         console.log("command");
     }
 }
