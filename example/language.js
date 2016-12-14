@@ -203,6 +203,368 @@ language = {
                 ]
             },
             "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Control",
+            "returnType": "Nothing",
+            "BasePhrase": {
+                "keyword": "then",
+                "Parts": [
+                    {
+                        "id": "command2",
+                        "name": "Second Command",
+                        "type": "Nothing"
+                    }
+                ]
+            },
+            "PrecedingArgument": {
+                "name": "First Command",
+                "type": "Nothing"
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Control",
+            "returnType": "Text",
+            "BasePhrase": {
+                "keyword": "as text",
+                "Parts": [ ]
+            },
+            "PrecedingArgument": {
+                "name": "Value",
+                "type": "Anything"
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Control",
+            "returnType": "Number",
+            "BasePhrase": {
+                "keyword": "as number",
+                "Parts": [ ]
+            },
+            "PrecedingArgument": {
+                "name": "Value",
+                "type": "Anything"
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Logic",
+            "returnType": "Condition",
+            "BasePhrase": {
+                "keyword": "not",
+                "Parts": [
+                    {
+                        "id": "condition",
+                        "name": "Condition",
+                        "type": "Condition"
+                    }
+                ]
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Logic",
+            "returnType": "Condition",
+            "BasePhrase": {
+                "keyword": "and",
+                "Parts": [
+                    {
+                        "id": "b",
+                        "name": "b",
+                        "type": "Condition"
+                    }
+                ]
+            },
+            "PrecedingArgument": {
+                "name": "a",
+                "type": "Condition"
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Logic",
+            "returnType": "Condition",
+            "BasePhrase": {
+                "keyword": "or",
+                "Parts": [
+                    {
+                        "id": "b",
+                        "name": "b",
+                        "type": "Condition"
+                    }
+                ]
+            },
+            "PrecedingArgument": {
+                "name": "a",
+                "type": "Condition"
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Logic",
+            "returnType": "Condition",
+            "BasePhrase": {
+                "keyword": "=",
+                "Parts": [
+                    {
+                        "id": "b",
+                        "name": "b",
+                        "type": "Anything"
+                    }
+                ]
+            },
+            "PrecedingArgument": {
+                "name": "a",
+                "type": "Anything"
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Logic",
+            "returnType": "Condition",
+            "BasePhrase": {
+                "keyword": "<>",
+                "Parts": [
+                    {
+                        "id": "b",
+                        "name": "b",
+                        "type": "Anything"
+                    }
+                ]
+            },
+            "PrecedingArgument": {
+                "name": "a",
+                "type": "Anything"
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Math",
+            "returnType": "Number",
+            "BasePhrase": {
+                "keyword": "+",
+                "Parts": [
+                    {
+                        "id": "b",
+                        "name": "b",
+                        "type": "Number"
+                    }
+                ]
+            },
+            "PrecedingArgument": {
+                "name": "a",
+                "type": "Number"
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Math",
+            "returnType": "Number",
+            "BasePhrase": {
+                "keyword": "-",
+                "Parts": [
+                    {
+                        "id": "b",
+                        "name": "b",
+                        "type": "Number"
+                    }
+                ]
+            },
+            "PrecedingArgument": {
+                "name": "a",
+                "type": "Number"
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Math",
+            "returnType": "Number",
+            "BasePhrase": {
+                "keyword": "*",
+                "Parts": [
+                    {
+                        "id": "b",
+                        "name": "b",
+                        "type": "Number"
+                    }
+                ]
+            },
+            "PrecedingArgument": {
+                "name": "a",
+                "type": "Number"
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Math",
+            "returnType": "Number",
+            "BasePhrase": {
+                "keyword": "/",
+                "Parts": [
+                    {
+                        "id": "b",
+                        "name": "b",
+                        "type": "Number"
+                    }
+                ]
+            },
+            "PrecedingArgument": {
+                "name": "a",
+                "type": "Number"
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Math",
+            "returnType": "Condition",
+            "BasePhrase": {
+                "keyword": "<",
+                "Parts": [
+                    {
+                        "id": "b",
+                        "name": "b",
+                        "type": "Number"
+                    }
+                ]
+            },
+            "PrecedingArgument": {
+                "name": "a",
+                "type": "Number"
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Math",
+            "returnType": "Condition",
+            "BasePhrase": {
+                "keyword": ">",
+                "Parts": [
+                    {
+                        "id": "b",
+                        "name": "b",
+                        "type": "Number"
+                    }
+                ]
+            },
+            "PrecedingArgument": {
+                "name": "a",
+                "type": "Number"
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Math",
+            "returnType": "Condition",
+            "BasePhrase": {
+                "keyword": "<=",
+                "Parts": [
+                    {
+                        "id": "b",
+                        "name": "b",
+                        "type": "Number"
+                    }
+                ]
+            },
+            "PrecedingArgument": {
+                "name": "a",
+                "type": "Number"
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Math",
+            "returnType": "Condition",
+            "BasePhrase": {
+                "keyword": ">=",
+                "Parts": [
+                    {
+                        "id": "b",
+                        "name": "b",
+                        "type": "Number"
+                    }
+                ]
+            },
+            "PrecedingArgument": {
+                "name": "a",
+                "type": "Number"
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Variables",
+            "returnType": "Nothing",
+            "BasePhrase": {
+                "keyword": "set",
+                "Parts": [
+                    {
+                        "id": "variable",
+                        "name": "Variable",
+                        "type": ""
+                    },
+                    {
+                        "text": "to"
+                    },
+                    {
+                        "id": "value",
+                        "name": "Value",
+                        "type": "Anything"
+                    }
+                ]
+            },
+            "OptionalPhrases": [ ]
+        },
+        {
+            "shortDescription": "",
+            "longDescription": "",
+            "category": "Variables",
+            "returnType": "Anything",
+            "BasePhrase": {
+                "keyword": "variable",
+                "Parts": [
+                    {
+                        "id": "variable",
+                        "name": "Variable",
+                        "type": ""
+                    }
+                ]
+            },
+            "OptionalPhrases": [ ]
         }
     ]
 };

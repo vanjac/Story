@@ -24,15 +24,14 @@ An example Story language, with basic types and commands.
 - `not [Condition]`: Condition
 - `[Condition] and [Condition]`: Condition
 - `[Condition] or [Condition]`: Condition
-- `[Anything] is {not} [Anything]`: Condition
+- `[Anything] = [Anything]`: Condition
+- `[Anything] <> [Anything]`: Condition
 
 ### Math
 - `[Number] + [Number]`: Number
 - `[Number] - [Number]`: Number
 - `[Number] * [Number]`: Number
 - `[Number] / [Number]`: Number
-- `[Anything] = [Anything]`: Condition
-- `[Anything] <> [Anything]`: Condition
 - `[Number] < [Number]`: Condition
 - `[Number] > [Number]`: Condition
 - `[Number] <= [Number]`: Condition
