@@ -130,9 +130,39 @@ function _compileRecursive(expression, language) {
             }
             wasInString = inString || isStringChar;
         });
-        console.log(parts);
-        // determine which command this is...
         
+        // determine which command this is...
+        var matchingCommand = null;
+        for(var i = 0, numCommands = language.Commands.length;
+                i < numCommands; i++) {
+            var command = language.Commands[i];
+            var keywordWords = command.BasePhrase.keyword.split(" ");
+            var hasPrefix = command.PrecedingArgument !== undefined;
+            var minimumLength = keywordWords.length;
+            if(hasPrefix)
+                minimumLength += 1;
+            if(parts.length < minimumLength)
+                continue;
+            var matches = true;
+            for(var partIndex = 0; partIndex < keywordWords.length;
+                    partIndex++) {
+                if(parts[partIndex + (hasPrefix ? 1 : 0)]
+                        != keywordWords[partIndex]) {
+                    matches = false;
+                    break;
+                }
+            }
+            
+            if(matches) {
+                matchingCommand = command;
+                break;
+            }
+        }
+        if(matchingCommand == null) {
+            throw "No matching command for " + expression;
+        } else {
+            console.log(matchingCommand.BasePhrase.keyword);
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-language = {
+exampleLanguage = {
     "Types": [
         {
             "name": "Anything",

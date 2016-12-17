@@ -11,7 +11,11 @@
                 var script = prompt("Script");
                 if(script == null)
                     break;
-                console.log(compileExpression(script, language));
+                try {
+                    console.log(compileExpression(script, exampleLanguage));
+                } catch(e) {
+                    console.log(e);
+                }
             }
         </script>
     </body>
