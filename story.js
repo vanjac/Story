@@ -128,10 +128,10 @@ function _removeComments(expression) {
 }
 
 
-function ScriptError(message, type, index, length) {
+function ScriptError(message, longMessage, type, line) {
     this.message = message;
+    this.longMessage = longMessage;
     this.type = type;
-    this.index = index;
-    this.length = length;
+    this.line = line;
 }
 
