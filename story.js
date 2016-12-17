@@ -108,7 +108,8 @@ function _compileRecursive(expression, language) {
             var isSymbol = SYMBOLS.indexOf(c) != -1;
             var isWhitespace = WHITESPACE.indexOf(c) != -1;
             var isStringChar = STRING_LITERAL_CHARS.indexOf(c) != -1;
-            if((bracketDepth == 0 || c == '[') && (!inString || isStringChar)) {
+            if((bracketDepth == 0 || (bracketDepth == 1 && c == '['))
+                    && (!inString || isStringChar)) {
                 if(isWhitespace || c == '[' || (isSymbol && !symbolString)
                         || (!isSymbol && symbolString)
                         || (!(inString || isStringChar) && wasInString)
@@ -160,9 +161,49 @@ function _compileRecursive(expression, language) {
         }
         if(matchingCommand == null) {
             throw "No matching command for " + expression;
-        } else {
-            console.log(matchingCommand.BasePhrase.keyword);
         }
+        var compiledCommand = {
+            "keyword": matchingCommand.BasePhrase.keyword,
+            "Arguments": [ ],
+            "optionalPhraseKeywords": [ ]
+        }
+        
+        var partIndex = 0;
+        if(matchingCommand.PrecedingArgument !== undefined) {
+            compiledCommand.PrecedingExpression =
+                _partValue(parts[0], matchingCommand.PrecedingArgument,
+                    language);
+            partIndex = 1;
+        }
+        // skip keywords
+        partIndex += command.BasePhrase.keyword.split(" ").length;
+        for(var phrasePartIndex = 0,
+                numPhraseParts = matchingCommand.BasePhrase.Parts.length;
+                phrasePartIndex < numPhraseParts; phrasePartIndex++) {
+            var part = parts[partIndex];
+            var phrasePart = matchingCommand.BasePhrase.Parts[phrasePartIndex];
+            if(phrasePart.id !== undefined) {
+                compiledCommand.Arguments.push({
+                    "id": phrasePart.id,
+                    "Expression": _partValue(part, phrasePart, language)
+                });
+            }
+            partIndex++;
+        }
+        // optional phrases...
+        
+        return compiledCommand
+    }
+}
+
+
+function _partValue(part, partDefinition, language) {
+    if(partDefinition.type == "") {
+        return {
+            "literalText": part
+        };
+    } else {
+        return _compileRecursive(part, language);
     }
 }
 
