@@ -1,5 +1,7 @@
 // WORK IN PROGRESS!
 
+STRING_LITERAL_CHARS = ['\'', '\"']
+
 
 if(typeof(String.prototype.trim) === "undefined") {
     String.prototype.trim = function() {
@@ -35,48 +37,30 @@ function _compileRecursive(expression, language) {
         };
     }
     
-    var inString = false, stringStartChar, bracketDepth = 0,
-        textInLine = false, textInPreviousLine = false;
+    var textInLine = false, textInPreviousLine = false;
     var multiline = false, textLiteral = true, underscores = true;
-    for(var i = 0; i < len; i++) {
-        var c = expression.charAt(i);
-        
+    _iterateExpression(expression, function(c, i, inString, bracketDepth) {
         if(c != '_')
             underscores = false;
         
         if(c == ' ' || c == '\t')
-            continue;
+            return;
         
         if(c == '\n' && bracketDepth == 0) {
             textInPreviousLine = textInLine;
             textInLine = false;
-            continue;
+            return;
         }
         
         textInLine = true;
         if(textInPreviousLine) {
             multiline = true;
-            break;
+            return false;
         }
         
-        if(inString) {
-            if(c == stringStartChar) {
-                inString = false;
-            }
-        } else {
-            if(c == '\"' || c == '\'') {
-                inString = true;
-                stringStartChar = c;
-            } else {
-                textLiteral = false;
-            }
-            
-            if(c == '[')
-                bracketDepth += 1;
-            if(c == ']')
-                bracketDepth -= 1;
-        }
-    }
+        if(!inString && STRING_LITERAL_CHARS.indexOf(c) == -1)
+            textLiteral = false;
+    });
     
     if(multiline) {
         // multiline...
@@ -101,30 +85,46 @@ function _removeComments(expression) {
     var lines = expression.split("\n");
     for(var i = 0, numLines = lines.length; i < numLines; i++) {
         var line = lines[i];
-        var inString = false, stringStartChar;
-        for(var j = 0, numChars = line.length; j < numChars; j++) {
-            var c = line.charAt(j);
-            
-            if(!inString) {
-                if(c == '\"' || c == '\'') {
-                    inString = true;
-                    stringStartChar = c;
-                }
-                if(c == ':') {
-                    line = line.substring(0, j);
-                    break;
-                }
-            } else {
-                if(c == stringStartChar) {
-                    inString = false;
-                }
+        _iterateExpression(line, function(c, j, inString, bracketDepth) {
+            if(!inString && c == ':') {
+                line = line.substring(0, j);
+                return false;
             }
-        }
+        });
         
         lines[i] = line;
     }
     
     return lines.join("\n");
+}
+
+
+// f(char c, int i, bool inString, int bracketDepth)
+// return false to stop
+function _iterateExpression(expression, f) {
+    var inString = false, stringStartChar, bracketDepth = 0;
+    for(var i = 0, len = expression.length; i < len; i++) {
+        var c = expression.charAt(i);
+        
+        if(inString) {
+            if(c == stringStartChar) {
+                inString = false;
+            }
+        } else {
+            if(STRING_LITERAL_CHARS.indexOf(c) != -1) {
+                inString = true;
+                stringStartChar = c;
+            }
+            
+            if(c == '[')
+                bracketDepth += 1;
+            if(c == ']')
+                bracketDepth -= 1;
+        }
+        
+        if(f(c, i, inString, bracketDepth) === false)
+            break;
+    }
 }
 
 
