@@ -1,6 +1,9 @@
 // WORK IN PROGRESS!
 
-STRING_LITERAL_CHARS = ['\'', '\"']
+var STRING_LITERAL_CHARS = ['\'', '\"'];
+var WHITESPACE = [' ', '\t'];
+// strings of symbols have implicit whitespace surrounding them
+var SYMBOLS = ['*', '+', '-', '/', '<', '=', '>', '^'];
 
 
 if(typeof(String.prototype.trim) === "undefined") {
@@ -43,12 +46,16 @@ function _compileRecursive(expression, language) {
         if(c != '_')
             underscores = false;
         
-        if(c == ' ' || c == '\t')
+        if(WHITESPACE.indexOf(c) != -1) {
+            if(!inString)
+                textLiteral = false;
             return;
+        }
         
         if(c == '\n' && bracketDepth == 0) {
             textInPreviousLine = textInLine;
             textInLine = false;
+            textLiteral = false;
             return;
         }
         
@@ -94,7 +101,38 @@ function _compileRecursive(expression, language) {
         };
     } else {
         // command...
-        console.log("command");
+        var parts = [];
+        var prevSpaceIndex = 0, symbolString = false, wasInString = false;
+        expression = expression + " "; // process last part
+        _iterateExpression(expression, function(c, i, inString, bracketDepth) {
+            var isSymbol = SYMBOLS.indexOf(c) != -1;
+            var isWhitespace = WHITESPACE.indexOf(c) != -1;
+            var isStringChar = STRING_LITERAL_CHARS.indexOf(c) != -1;
+            if((bracketDepth == 0 || c == '[') && (!inString || isStringChar)) {
+                if(isWhitespace || c == '[' || (isSymbol && !symbolString)
+                        || (!isSymbol && symbolString)
+                        || (!(inString || isStringChar) && wasInString)
+                        || ((inString || isStringChar) && !wasInString)) {
+                    symbolString = isSymbol;
+                    var part = expression.substring(prevSpaceIndex, i).trim();
+                    if(part.length != 0) {
+                        if(part.charAt(0) == '['
+                                && part.charAt(part.length - 1) == ']') {
+                            part = part.substring(1, part.length - 1).trim();
+                            // [ ] is still allowed
+                        }
+                        parts.push(part);
+                    }
+                    prevSpaceIndex = i;
+                }
+            } else {
+                symbolString = false;
+            }
+            wasInString = inString || isStringChar;
+        });
+        console.log(parts);
+        // determine which command this is...
+        
     }
 }
 
