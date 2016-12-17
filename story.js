@@ -64,8 +64,26 @@ function _compileRecursive(expression, language) {
     
     if(multiline) {
         // multiline...
-        // split into lines (brackets contine line)
-        console.log("multiline");
+        var lines = [];
+        var prevLineIndex = 0;
+        _iterateExpression(expression, function(c, i, inString, bracketDepth) {
+            if(c == '\n' && bracketDepth == 0) {
+                var line = expression.substring(prevLineIndex, i).trim();
+                if(line.length != 0)
+                    lines.push(line);
+                prevLineIndex = i + 1;
+            }
+        });
+        var line = expression.substring(prevLineIndex, len).trim();
+        if(line.length != 0)
+            lines.push(line);
+        var compiledLines = [];
+        for(var i = 0, numLines = lines.length; i < numLines; i++) {
+            compiledLines.push(_compileRecursive(lines[i], language));
+        }
+        return {
+            "Lines": compiledLines
+        };
     } else if(underscores) {
         // blank
         throw "You must remove all blanks (underscores) before compiling!";
