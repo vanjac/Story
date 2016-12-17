@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    
+    </head>
+    <body>
+        <script type="text/javascript" src="../story.js"></script>
+        <script type="text/javascript" src="language.js"></script>
+        <script type="text/javascript">
+            while(true) {
+                var script = prompt("Script");
+                if(script == null)
+                    break;
+                console.log(compileExpression(script, language));
+            }
+        </script>
+    </body>
+</html>
