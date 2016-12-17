@@ -80,7 +80,7 @@ function _compileRecursive(expression, language) {
     
     if(multiline) {
         // multiline...
-        // split into lines (brackets contine line); remove all comments
+        // split into lines (brackets contine line)
         console.log("multiline");
     } else if(underscores) {
         // blank
@@ -92,7 +92,6 @@ function _compileRecursive(expression, language) {
         };
     } else {
         // command...
-        // remove all comments!
         console.log("command");
     }
 }
