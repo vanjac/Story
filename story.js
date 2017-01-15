@@ -4,6 +4,8 @@ var STRING_LITERAL_CHARS = ['\'', '\"'];
 var WHITESPACE = [' ', '\t'];
 // strings of symbols have implicit whitespace surrounding them
 var SYMBOLS = ['*', '+', '-', '/', '<', '=', '>', '^'];
+var INVALID_CHARS = ['!', '#', '$', '%', '&', '(', ')', ',', ';', '?', '@',
+                     '\\', '`', '{', '|', '}', '~'];
 
 
 if(typeof(String.prototype.trim) === "undefined") {
@@ -21,6 +23,33 @@ function compileExpression(expression, language) {
 
 function checkExpression(expression, language) {
     var errors = [ ]
+    expression = _removeComments(expression);
+    
+    var lastBracketDepth = 0;
+    _iterateExpression(expression,
+    function(c, i, line, inString, bracketDepth) {
+        if(inString) {
+            if(c == '\n') {
+                errors.push(multilineStringError(line));
+            }
+        } else {
+            if(INVALID_CHARS.indexOf(c) != -1) {
+                errors.push(invalidCharacterError(c, line));
+            }
+            if(c == ']' && bracketDepth < 0) {
+                errors.push(unmatchedCloseBracketError(line));
+            }
+        }
+        lastBracketDepth = bracketDepth;
+    });
+    if(lastBracketDepth > 0) {
+        errors.push(unmatchedOpenBracketError());
+    }
+    
+    if(errors.length != 0)
+        return errors;
+    
+    // recursive expression scan
     
     return errors;
 }
@@ -42,7 +71,8 @@ function _compileRecursive(expression, language) {
     
     var textInLine = false, textInPreviousLine = false;
     var multiline = false, textLiteral = true, underscores = true;
-    _iterateExpression(expression, function(c, i, inString, bracketDepth) {
+    _iterateExpression(expression,
+    function(c, i, line, inString, bracketDepth) {
         if(c != '_')
             underscores = false;
         
@@ -73,7 +103,8 @@ function _compileRecursive(expression, language) {
         // multiline...
         var lines = [];
         var prevLineIndex = 0;
-        _iterateExpression(expression, function(c, i, inString, bracketDepth) {
+        _iterateExpression(expression,
+        function(c, i, line, inString, bracketDepth) {
             if(c == '\n' && bracketDepth == 0) {
                 var line = expression.substring(prevLineIndex, i).trim();
                 if(line.length != 0)
@@ -104,7 +135,8 @@ function _compileRecursive(expression, language) {
         var parts = [];
         var prevSpaceIndex = 0, symbolString = false, wasInString = false;
         expression = expression + " "; // process last part
-        _iterateExpression(expression, function(c, i, inString, bracketDepth) {
+        _iterateExpression(expression,
+        function(c, i, line, inString, bracketDepth) {
             var isSymbol = SYMBOLS.indexOf(c) != -1;
             var isWhitespace = WHITESPACE.indexOf(c) != -1;
             var isStringChar = STRING_LITERAL_CHARS.indexOf(c) != -1;
@@ -212,7 +244,8 @@ function _removeComments(expression) {
     var lines = expression.split("\n");
     for(var i = 0, numLines = lines.length; i < numLines; i++) {
         var line = lines[i];
-        _iterateExpression(line, function(c, j, inString, bracketDepth) {
+        _iterateExpression(line,
+        function(c, j, line, inString, bracketDepth) {
             if(!inString && c == ':') {
                 line = line.substring(0, j);
                 return false;
@@ -226,12 +259,20 @@ function _removeComments(expression) {
 }
 
 
-// f(char c, int i, bool inString, int bracketDepth)
+// f(char c, int i, int line, bool inString, int bracketDepth)
 // return false to stop
 function _iterateExpression(expression, f) {
-    var inString = false, stringStartChar, bracketDepth = 0;
+    var inString = false, stringStartChar, bracketDepth = 0,
+        line = 0, newLine = false;
     for(var i = 0, len = expression.length; i < len; i++) {
         var c = expression.charAt(i);
+        
+        if(newLine) {
+            newLine = false;
+            line++;
+        }
+        if(c == '\n')
+            newLine = true;
         
         if(inString) {
             if(c == stringStartChar) {
@@ -249,16 +290,34 @@ function _iterateExpression(expression, f) {
                 bracketDepth -= 1;
         }
         
-        if(f(c, i, inString, bracketDepth) === false)
+        if(f(c, i, line, inString, bracketDepth) === false)
             break;
     }
 }
 
 
-function ScriptError(message, longMessage, type, line) {
+function ScriptError(message, type, line) {
     this.message = message;
-    this.longMessage = longMessage;
     this.type = type;
     this.line = line;
+}
+
+function invalidCharacterError(character, line) {
+    return new ScriptError("Invalid character " + character, "error", line);
+}
+
+function multilineStringError(line) {
+    return new ScriptError("Text shouldn't span multiple lines", "error", line);
+}
+
+function unmatchedOpenBracketError() {
+    return new ScriptError(
+        "Not enough closing brackets to match opening brackets", "error", 0);
+}
+
+function unmatchedCloseBracketError(line) {
+    return new ScriptError(
+        "Closing bracket doesn't have a matching opening bracket", "error",
+        line);
 }
 
