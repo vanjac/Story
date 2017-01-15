@@ -26,6 +26,8 @@ function checkExpression(expression, language) {
     expression = _removeComments(expression);
     
     var lastBracketDepth = 0;
+    var lastLine = 0;
+    var lastOpenBracketLine = 0;
     _iterateExpression(expression,
     function(c, i, line, inString, bracketDepth) {
         if(inString) {
@@ -39,19 +41,31 @@ function checkExpression(expression, language) {
             if(c == ']' && bracketDepth < 0) {
                 errors.push(unmatchedCloseBracketError(line));
             }
+            if(c == '[')
+                lastOpenBracketLine = line;
         }
         lastBracketDepth = bracketDepth;
+        lastLine = line;
     });
     if(lastBracketDepth > 0) {
-        errors.push(unmatchedOpenBracketError());
+        errors.push(unmatchedOpenBracketError(lastOpenBracketLine));
     }
     
     if(errors.length != 0)
         return errors;
     
     // recursive expression scan
+    var type = _checkRecursive(expression, language, errors);
+    if(type != "Nothing")
+        errors.push(typeNotNothingError(lastLine));
     
     return errors;
+}
+
+
+// returns the type name
+function _checkRecursive(expression, language, errorList) {
+    
 }
 
 
@@ -323,14 +337,19 @@ function multilineStringError(line) {
     return new ScriptError("Text shouldn't span multiple lines", "error", line);
 }
 
-function unmatchedOpenBracketError() {
+function unmatchedOpenBracketError(line) {
     return new ScriptError(
-        "Not enough closing brackets to match opening brackets", "error", 0);
+        "Opening bracket doesn't have a matching closing bracket", "error",
+        line);
 }
 
 function unmatchedCloseBracketError(line) {
     return new ScriptError(
         "Closing bracket doesn't have a matching opening bracket", "error",
         line);
+}
+
+function typeNotNothingError(line) {
+    return new ScriptError("Incomplete statement", "error", line);
 }
 
