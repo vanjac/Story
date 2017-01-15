@@ -6,13 +6,26 @@
     <body>
         <script type="text/javascript" src="../story.js"></script>
         <script type="text/javascript" src="language.js"></script>
+        
+        <textarea id="script" rows="8" cols="80"></textarea>
+        <br>
+        <button onclick="checkScript()">Check</button>
+        
         <script type="text/javascript">
-            while(true) {
-                var script = prompt("Script");
-                if(script == null)
-                    break;
+            function checkScript() {
+                console.log("Checking script...");
+                var script = document.getElementById("script").value;
                 try {
-                    console.log(compileExpression(script, exampleLanguage));
+                    errors = checkExpression(script, exampleLanguage);
+                    if(errors.length != 0) {
+                        for(var i = 0; i < errors.length; i++) {
+                            var error = errors[i];
+                            console.log(error.type + " on line " + error.line
+                                        + ": " + error.message);
+                        }
+                    } else {
+                        console.log(compileExpression(script, exampleLanguage));
+                    }
                 } catch(e) {
                     console.log(e);
                 }
