@@ -60,47 +60,15 @@ function _compileRecursive(expression, language) {
     var len = expression.length;
     if(len == 0)
         return null;
-    // determine what type of expression this is...
     
-    if(!isNaN(expression)) {
+    expressionType = _detectExpressionType(expression);
+    
+    if(expressionType == "number") {
         // number literal
         return {
             "literalText": expression
         };
-    }
-    
-    var textInLine = false, textInPreviousLine = false;
-    var multiline = false, textLiteral = true, underscores = true;
-    _iterateExpression(expression,
-    function(c, i, line, inString, bracketDepth) {
-        if(c != '_')
-            underscores = false;
-        
-        if(WHITESPACE.indexOf(c) != -1) {
-            if(!inString)
-                textLiteral = false;
-            return;
-        }
-        
-        if(c == '\n' && bracketDepth == 0) {
-            textInPreviousLine = textInLine;
-            textInLine = false;
-            textLiteral = false;
-            return;
-        }
-        
-        textInLine = true;
-        if(textInPreviousLine) {
-            multiline = true;
-            return false;
-        }
-        
-        if(!inString && STRING_LITERAL_CHARS.indexOf(c) == -1)
-            textLiteral = false;
-    });
-    
-    if(multiline) {
-        // multiline...
+    } else if(expressionType == "multiline") {
         var lines = [];
         var prevLineIndex = 0;
         _iterateExpression(expression,
@@ -122,16 +90,14 @@ function _compileRecursive(expression, language) {
         return {
             "Lines": compiledLines
         };
-    } else if(underscores) {
-        // blank
+    } else if(expressionType == "blank") {
         throw "You must remove all blanks (underscores) before compiling!";
-    } else if(textLiteral) {
+    } else if(expressionType == "text") {
         // text literal
         return {
             "literalText": expression.substring(1, expression.length - 1)
         };
-    } else {
-        // command...
+    } else if(expressionType == "command") {
         var parts = [];
         var prevSpaceIndex = 0, symbolString = false, wasInString = false;
         expression = expression + " "; // process last part
@@ -225,6 +191,53 @@ function _compileRecursive(expression, language) {
         // optional phrases...
         
         return compiledCommand
+    }
+}
+
+
+function _detectExpressionType(expression) {
+    if(!isNaN(expression)) {
+        return "number"
+    }
+    
+    var textInLine = false, textInPreviousLine = false;
+    var multiline = false, textLiteral = true, underscores = true;
+    _iterateExpression(expression,
+    function(c, i, line, inString, bracketDepth) {
+        if(c != '_')
+            underscores = false;
+        
+        if(WHITESPACE.indexOf(c) != -1) {
+            if(!inString)
+                textLiteral = false;
+            return;
+        }
+        
+        if(c == '\n' && bracketDepth == 0) {
+            textInPreviousLine = textInLine;
+            textInLine = false;
+            textLiteral = false;
+            return;
+        }
+        
+        textInLine = true;
+        if(textInPreviousLine) {
+            multiline = true;
+            return false;
+        }
+        
+        if(!inString && STRING_LITERAL_CHARS.indexOf(c) == -1)
+            textLiteral = false;
+    });
+    
+    if(multiline) {
+        return "multiline";
+    } else if(underscores) {
+        return "blank";
+    } else if(textLiteral) {
+        return "text";
+    } else {
+        return "command";
     }
 }
 
