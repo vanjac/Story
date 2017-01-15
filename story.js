@@ -55,7 +55,7 @@ function checkExpression(expression, language) {
         return errors;
     
     // recursive expression scan
-    var type = _checkRecursive(expression, language, errors);
+    var type = _checkRecursive(expression, language, 0, errors);
     if(type != "Nothing")
         errors.push(typeNotNothingError(lastLine));
     
@@ -64,8 +64,29 @@ function checkExpression(expression, language) {
 
 
 // returns the type name
-function _checkRecursive(expression, language, errorList) {
+function _checkRecursive(expression, language, startLine, errorList) {
+    expression = expression.trim();
+    if(expression.length == 0) {
+        errorList.push(emptyExpressionError(startLine));
+        return "Nothing";
+    }
     
+    expressionType = _detectExpressionType(expression);
+    
+    if(expressionType == "number") {
+        return "Number";
+    } else if(expressionType == "multiline") {
+        
+    } else if(expressionType == "blank") {
+        errorList.push(blankError(startLine));
+        return "Anything";
+    } else if(expressionType == "text") {
+        return "Text";
+    } else if(expressionType == "command") {
+    
+    } else {
+        errorList.push(unknownError(startLine));
+    }
 }
 
 
@@ -329,6 +350,16 @@ function ScriptError(message, type, line) {
     this.line = line;
 }
 
+function unknownError(line) {
+    return new ScriptError(
+        "An unknown error occurred while interpreting the expression", "error",
+        line);
+}
+
+function blankError(line) {
+    return new ScriptError("Fill in the blank", "blank", line);
+}
+
 function invalidCharacterError(character, line) {
     return new ScriptError("Invalid character " + character, "error", line);
 }
@@ -351,5 +382,9 @@ function unmatchedCloseBracketError(line) {
 
 function typeNotNothingError(line) {
     return new ScriptError("Incomplete statement", "error", line);
+}
+
+function emptyExpressionError(line) {
+    return new ScriptError("Empty expression", "error", line);
 }
 
