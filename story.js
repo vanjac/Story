@@ -45,7 +45,8 @@ function checkExpression(expression, language) {
                 lastOpenBracketLine = line;
         }
         lastBracketDepth = bracketDepth;
-        lastLine = line;
+        if(WHITESPACE.indexOf(c) == -1 && c != '\n')
+            lastLine = line;
     });
     if(lastBracketDepth > 0) {
         errors.push(unmatchedOpenBracketError(lastOpenBracketLine));
@@ -76,14 +77,35 @@ function _checkRecursive(expression, language, startLine, errorList) {
     if(expressionType == "number") {
         return "Number";
     } else if(expressionType == "multiline") {
+        var prevLineIndex = 0;
+        var types = [];
+        var typeLines = [];
+        _iterateExpression(expression + "\n",
+        function(c, i, line, inString, bracketDepth) {
+            if(c == '\n' && bracketDepth == 0) {
+                var lineExpr = expression.substring(prevLineIndex, i).trim();
+                if(lineExpr.length != 0) {
+                    var type =
+                        _checkRecursive(lineExpr, language, line, errorList);
+                    types.push(type);
+                    typeLines.push(line);
+                }
+                prevLineIndex = i + 1;
+            }
+        });
         
+        for(var i = 0; i < types.length - 1; i++) {
+            if(types[i] != "Nothing")
+                errorList.push(typeNotNothingError(typeLines[i]));
+        }
+        return types[types.length - 1];
     } else if(expressionType == "blank") {
         errorList.push(blankError(startLine));
         return "Anything";
     } else if(expressionType == "text") {
         return "Text";
     } else if(expressionType == "command") {
-    
+        return "Nothing"; // for testing
     } else {
         errorList.push(unknownError(startLine));
     }
