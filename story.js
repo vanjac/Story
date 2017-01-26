@@ -110,7 +110,7 @@ function _checkRecursive(expression, language, startLine, errorList) {
     } else if(expressionType == "text") {
         return "Text";
     } else if(expressionType == "command") {
-        return "Nothing"; // for testing
+        return "Nothing"; // TODO
     } else {
         errorList.push(unknownError(startLine));
     }
@@ -250,7 +250,7 @@ function _compileRecursive(expression, language) {
             }
             partIndex++;
         }
-        // optional phrases...
+        // TODO: optional phrases...
         
         return compiledCommand
     }
