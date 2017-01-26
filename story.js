@@ -28,11 +28,12 @@ function checkExpression(expression, language) {
     var lastBracketDepth = 0;
     var lastLine = 0;
     var lastOpenBracketLine = 0;
+    var lastInString = false;
     _iterateExpression(expression,
     function(c, i, line, inString, bracketDepth) {
         if(inString) {
             if(c == '\n') {
-                errors.push(multilineStringError(line));
+                errors.push(incompleteStringError(line));
             }
         } else {
             if(INVALID_CHARS.indexOf(c) != -1) {
@@ -47,9 +48,13 @@ function checkExpression(expression, language) {
         lastBracketDepth = bracketDepth;
         if(WHITESPACE.indexOf(c) == -1 && c != '\n')
             lastLine = line;
+        lastInString = inString;
     });
     if(lastBracketDepth > 0) {
         errors.push(unmatchedOpenBracketError(lastOpenBracketLine));
+    }
+    if(lastInString) {
+        errors.push(incompleteStringError(lastLine));
     }
     
     if(errors.length != 0)
@@ -340,6 +345,7 @@ function _iterateExpression(expression, f) {
         if(newLine) {
             newLine = false;
             line++;
+            inString = false;
         }
         if(c == '\n')
             newLine = true;
@@ -386,8 +392,8 @@ function invalidCharacterError(character, line) {
     return new ScriptError("Invalid character " + character, "error", line);
 }
 
-function multilineStringError(line) {
-    return new ScriptError("Text shouldn't span multiple lines", "error", line);
+function incompleteStringError(line) {
+    return new ScriptError("Text is missing an ending quote", "error", line);
 }
 
 function unmatchedOpenBracketError(line) {
