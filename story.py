@@ -170,7 +170,7 @@ def tokenize(script):
     inText = False
     textStartChar = None
     bracketDepth = 0
-    lineIsEmpty = False
+    lineIsEmpty = True
 
     lastOpenBracketI = 0
 
