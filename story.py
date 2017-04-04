@@ -203,7 +203,7 @@ def tokenize(script):
         # non-token checks
 
         if c == '\n':
-            if not lineIsEmpty and bracketDepth == 0:
+            if not lineIsEmpty:
                 tokens.append(Token(i, '\n'))
             lineIsEmpty = True
 
