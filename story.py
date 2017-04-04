@@ -102,12 +102,6 @@ class Token:
     def __repr__(self):
         return repr(self.text) + " @ " + str(self.location)
 
-    def strip(self):
-        prevLen = len(self.text)
-        self.text = self.text.lstrip(''.join(WHITESPACE))
-        self.location += prevLen - len(self.text)
-        self.text = self.text.rstrip(''.join(WHITESPACE))
-
 
 # return a tuple: (list of Tokens, list of CompileMessages)
 def tokenize(script):
