@@ -102,6 +102,55 @@ class Token:
     def __repr__(self):
         return repr(self.text) + " @ " + str(self.location)
 
+# check token type:
+# these assume a correctly formatted token, which the tokenize function should
+# produce as long as there are no errors
+
+def tokenIsNewline(text):
+    return text == '\n'
+
+def tokenIsOpenBracket(text):
+    return text == OPEN_BRACKET
+
+def tokenIsCloseBracket(text):
+    return text == CLOSE_BRACKET
+
+def tokenIsWord(text):
+    if text == '':
+        return False
+    return text[0] != BLANK and (text[0].isalpha() or text[0] in WORD_CHARS)
+
+def tokenIsText(text):
+    if text == '':
+        return False
+    return text[0] in TEXT_LITERAL_CHARS
+
+def tokenIsSymbol(text):
+    if text == '':
+        return False
+    if text[0] == MINUS:
+        # make sure this isn't a number
+        if len(text) == 1:
+            return True
+        else:
+            return text[1] in SYMBOLS
+    else:
+        return text[0] in SYMBOLS
+
+def tokenIsNumber(text):
+    if text == '':
+        return False
+    elif len(text) == 1:
+        return text in NUMBER_LITERAL_CHARS
+    elif text[0] == MINUS:
+        return text[1] in NUMBER_LITERAL_CHARS
+    else:
+        return text[0] in NUMBER_LITERAL_CHARS
+
+def tokenIsBlank(text):
+    if text == '':
+        return False
+    return text[0] == BLANK
 
 # return a tuple: (list of Tokens, list of CompileMessages)
 def tokenize(script):
