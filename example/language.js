@@ -1,4 +1,4 @@
-language = {
+{
     "Types": [
         {
             "name": "Anything",
@@ -567,5 +567,4 @@ language = {
             "OptionalPhrases": [ ]
         }
     ]
-};
-
+}
