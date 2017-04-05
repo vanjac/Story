@@ -275,7 +275,8 @@ def tokenize(script):
 
         elif c in NUMBER_LITERAL_CHARS:
             numberLiteral = True
-            if len(tokens) > 0 and tokens[-1].text == MINUS:
+            if len(tokens) > 0 and tokens[-1].text == MINUS \
+                    and _minusIsNegative(tokens):
                 tokens.pop()
                 currentToken = Token(i, MINUS + c)
             else:
@@ -296,3 +297,53 @@ def tokenize(script):
 
     return tokens, messages
 # end tokenize
+
+# Used for when the most recent token is a minus sign and a number is about
+# to be added. Should the minus sign be interpreted as the negative sign of the
+# number? (True) or as a subtract symbol? (False)
+# There shouldn't be any ambiguity in these rules.
+def _minusIsNegative(tokens):
+    if len(tokens) == 1:
+        # nothing before it, so nothing to subtract from.
+        return True
+
+    beforeMinus = tokens[-2]
+    if tokenIsOpenBracket(beforeMinus.text) \
+            or tokenIsSymbol(beforeMinus.text) \
+            or tokenIsWord(beforeMinus.text) \
+            or tokenIsNewline(beforeMinus.text):
+        # open bracket or newline: start of command, nothing to subtract from
+        # word or symbol: in the middle of a command that isn't a subtraction
+        return True
+
+    # beforeMinus is a number, blank, close bracket, or string
+
+    if len(tokens) == 2:
+        # the number, blank, or string is the first argument of a subtraction
+        return False
+
+    if tokenIsCloseBracket(beforeMinus.text):
+        # find token before matching open bracket
+        i = len(tokens) - 3
+        searchBracketDepth = 1
+        while i >= 0:
+            t = tokens[i]
+            if tokenIsOpenBracket(t.text):
+                searchBracketDepth -= 1
+            elif tokenIsCloseBracket(t.text):
+                searchBracketDepth += 1
+            if searchBracketDepth == 0:
+                break
+            i -= 1
+        if i <= 0:
+            return False
+        beforeBeforeMinus = tokens[i - 1]
+    else:
+        beforeBeforeMinus = tokens[-3]
+
+    if tokenIsOpenBracket(beforeBeforeMinus.text) \
+            or tokenIsNewline(beforeBeforeMinus.text):
+        # this is a subtraction command
+        return False
+
+    return True
