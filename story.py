@@ -277,8 +277,8 @@ def tokenize(script):
             numberLiteral = True
             if len(tokens) > 0 and tokens[-1].text == MINUS \
                     and _minusIsNegative(tokens):
-                tokens.pop()
-                currentToken = Token(i, MINUS + c)
+                minusToken = tokens.pop()
+                currentToken = Token(minusToken.location, MINUS + c)
             else:
                 currentToken = Token(i, c)
 
