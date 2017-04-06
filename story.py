@@ -279,6 +279,14 @@ def tokenize(script):
                     and _minusIsNegative(tokens):
                 minusToken = tokens.pop()
                 currentToken = Token(minusToken.location, MINUS + c)
+            # allow expressions like "3*-5"
+            elif len(tokens) > 0 and len(tokens[-1].text) > 1 \
+                    and tokenIsSymbol(tokens[-1].text) \
+                    and tokens[-1].text.endswith(MINUS):
+                # remove trailing - from previous symbol and use as negative
+                tokens[-1].text = tokens[-1].text[:-1]
+                currentToken = \
+                    Token(tokens[-1].location + len(tokens[-1].text), MINUS + c)
             else:
                 currentToken = Token(i, c)
 
